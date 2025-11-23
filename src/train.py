@@ -18,7 +18,7 @@ def parse_args():
     ap.add_argument("--dev", default="data/dev.jsonl")
     ap.add_argument("--out_dir", default="out")
     ap.add_argument("--batch_size", type=int, default=16) # Increased batch size for smaller model
-    ap.add_argument("--epochs", type=int, default=25)      # Increased epochs
+    ap.add_argument("--epochs", type=int, default=5)      # Increased epochs
     ap.add_argument("--lr", type=float, default=5e-5)
     ap.add_argument("--max_length", type=int, default=256)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
