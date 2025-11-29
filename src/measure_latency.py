@@ -14,11 +14,18 @@ def main():
     ap.add_argument("--input", default="data/dev.jsonl")
     ap.add_argument("--max_length", type=int, default=256)
     ap.add_argument("--runs", type=int, default=50)
-    ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
+    ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"])
     args = ap.parse_args()
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_dir if args.model_name is None else args.model_name)
     model = AutoModelForTokenClassification.from_pretrained(args.model_dir)
+     # --- ADDED: Dynamic Quantization ---
+    if args.device == "cpu":
+        print("Optimizing model with Dynamic Quantization for CPU...")
+        model = torch.quantization.quantize_dynamic(
+            model, {torch.nn.Linear}, dtype=torch.qint8
+        )
+    # -
     model.to(args.device)
     model.eval()
 
